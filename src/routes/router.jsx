@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Verify from "../pages/Verify";
 import DashboardPage from "../dashboard/DashboardPage";
+import ClientPage from "../dashboard/pages/ClientsPage";
 
 const router = createBrowserRouter([
   // 🟦 Public routes
@@ -33,10 +34,11 @@ const router = createBrowserRouter([
     ),
     children: [
       { path: "/dashboard", element: <DashboardPage /> },
+      { path: "/dashboard/clients", element: <ClientPage />}
     ],
   },
   {
-    element: <h2>404 page not found</h2>, // Layout عام للصفحات المفتوحة
+    element: <Navigate to="/" />, // Layout عام للصفحات المفتوحة
     children: [
       { path: "*", element: <Home /> },
       // { path: "/signup", element: <Signup /> },

@@ -29,12 +29,14 @@ export default function Header({ theme = "light", onToggleSidebar }) {
 
   return (
     <header
-      className={`
-        flex items-center justify-between
+      className={`header-dashboard
+        flex items-center
         px-6 py-3 md:px-10 md:py-4
         sticky top-0 z-50
         bg-bg text-text transition-all duration-300
         border-b border-[var(--color-muted)]/20
+        flex-wrap
+        justify-between
         font-sans
         ${theme === "glass" ? "backdrop-blur-lg bg-white/30" : ""}
       `}

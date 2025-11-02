@@ -10,6 +10,8 @@ import ProjectCardSkeleton from "../components/skeletons/ProjectCardSkeleton";
 import ActivityItemSkeleton from "../components/skeletons/ActivityItemSkeleton";
 import ChartSkeleton from "../components/skeletons/ChartSkeleton";
 import { Plus } from "lucide-react";
+import RevenueChart from "./components/RevenueChart";
+import ProjectsChart from "./components/ProjectsChart";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
@@ -79,8 +81,20 @@ export default function DashboardPage() {
           )}
         </section>
 
-        {/* Recent Activity Section */}
-        <section>
+        {/* charts section*/}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {stats.map((s) => <StatCardSkeleton key={s.id} />)}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-6 mt-8">
+            <RevenueChart />
+            <ProjectsChart />
+          </div>
+        )}
+        
+
+        {/* <section>
           <h2 className="text-lg font-semibold text-text mb-4">Recent Activity</h2>
           {loading ? (
             <div className="space-y-3">
@@ -91,10 +105,9 @@ export default function DashboardPage() {
           )}
         </section>
 
-        {/* Chart Section */}
         <section>
           {loading ? <ChartSkeleton /> : <ProjectProgressChart data={chartData} />}
-        </section>
+        </section> */}
       </div>
     </>
   );

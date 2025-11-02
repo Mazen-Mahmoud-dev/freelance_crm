@@ -4,10 +4,10 @@ import { LayoutDashboard, Users, Folder, CheckSquare, Settings, X } from "lucide
 
 const links = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/clients", label: "Clients", icon: Users },
-  { to: "/projects", label: "Projects", icon: Folder },
-  { to: "/tasks", label: "Tasks", icon: CheckSquare },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/dashboard/clients", label: "Clients", icon: Users },
+  { to: "/dashboard/projects", label: "Projects", icon: Folder },
+  { to: "/dashboard/tasks", label: "Tasks", icon: CheckSquare },
+  { to: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {

@@ -13,6 +13,7 @@ export default function Hero() {
         bg-bg text-text
         transition-all duration-300
       "
+      id="home"
     >
       {/* Left Text Content */}
       <motion.div

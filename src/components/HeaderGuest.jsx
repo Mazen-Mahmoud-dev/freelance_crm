@@ -35,10 +35,10 @@ export default function HeaderGuest({ theme = "glass" }) {
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-8 text-[var(--color-text)] font-medium">
-        {["Home", "Features", "Pricing", "Contact"].map((item) => (
+        {["Home", "Features", "Pricing", "How it works"].map((item) => (
           <Link
             key={item}
-            to="/"
+            to={"/?scroll=" + item.toLowerCase().replace(/\s+/g, "-")}
             className="hover:text-primary transition-colors duration-200"
           >
             {item}

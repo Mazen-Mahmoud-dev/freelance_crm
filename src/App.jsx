@@ -3,7 +3,7 @@ import router from "./routes/router";
 import { Toaster } from "react-hot-toast";
 function App() {
   return (
-    <>
+    <>  
       <RouterProvider router={router} />
       <Toaster position="top-center" reverseOrder={false} />
     </>

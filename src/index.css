@@ -26,10 +26,13 @@
   --color-main-background: oklch(28.966% 0.05662 248.815);
 }
 /* Apply base styles using variables */
+*{
+  scroll-behavior: smooth;
+}
 body {
   font-family: var(--font-main);
   background-color: var(--color-main-background);
-
+  
   color: #00a8e6;
   margin: 0;
   padding: 0;
@@ -48,4 +51,10 @@ body {
 }
 button{
   cursor: pointer;
+}
+
+@media (max-width: 380px) {
+  .header-dashboard {
+    justify-content: center;
+  }
 }
