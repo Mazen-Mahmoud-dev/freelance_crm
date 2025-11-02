@@ -49,7 +49,7 @@ export default function RegisterForm({ toggleAuth }) {
   };
 
   return (
-    <div className="absolute w-full bg-bg shadow-xl rounded-2xl p-8 rotate-y-180 backface-hidden">
+    <div className="absolute w-full bg-bg shadow-xl rounded-2xl p-8 rotate-y-180 backface-hidden h-[500px]">
       <h2 className="text-2xl font-bold mb-2 text-center">Join Us Today</h2>
       <p className="text-sm text-gray-500 text-center mb-6">
         Create your account and start exploring

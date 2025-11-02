@@ -43,7 +43,7 @@ export default function LoginForm({ toggleAuth }) {
   };
 
   return (
-    <div className="absolute w-full backface-hidden bg-bg shadow-xl rounded-2xl p-8">
+    <div className="absolute w-full backface-hidden bg-bg shadow-xl rounded-2xl p-8 pb-12 h-[500px]">
       <h2 className="text-2xl font-bold mb-2 text-center">Welcome Back</h2>
       <p className="text-sm text-gray-500 text-center mb-6">
         Sign in to continue your journey

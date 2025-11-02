@@ -28,10 +28,10 @@ export default function HeaderGuest({ theme = "glass" }) {
       `}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2">
+      <Link to="/" className="flex items-center gap-2">
         <span className="text-xl font-bold text-primary">Freelance</span>
         <span className="text-muted">CRM</span>
-      </div>
+      </Link>
 
       {/* Desktop Nav */}
       <nav className="hidden md:flex items-center gap-8 text-[var(--color-text)] font-medium">

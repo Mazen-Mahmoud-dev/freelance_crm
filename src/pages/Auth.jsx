@@ -1,4 +1,3 @@
-// src/pages/Auth.jsx
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoginForm from "../components/LoginForm";
@@ -19,8 +18,8 @@ export default function Auth() {
   };
 
   return (
-    <div className="mt-12 flex items-center justify-center p-6 ">
-      <div className="w-[380px] relative perspective ">
+    <div className="mt-12 flex items-start justify-center p-6 bg-background min-h-screen">
+      <div className="w-[450px] relative perspective">
         {/* Toggle */}
         <div className="flex justify-between items-center bg-white shadow rounded-full px-4 py-2 mb-6">
           <button
