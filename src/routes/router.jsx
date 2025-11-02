@@ -1,14 +1,14 @@
-import { Routes, Route, Router, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import PublicLayout from "../layouts/PublicLayout";
 import AppLayout from "../layouts/AppLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 
-import Login from "../components/LoginForm";
 // import Signup from "../pages/Signup";
 import Dashboard from "../pages/Dashboard";
 import Home from "../pages/Home";
 import Auth from "../pages/Auth";
 import Verify from "../pages/Verify";
+import DashboardPage from "../dashboard/DashboardPage";
 
 const router = createBrowserRouter([
   // 🟦 Public routes
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { path: "/dashboard", element: <Dashboard /> },
+      { path: "/dashboard", element: <DashboardPage /> },
     ],
   },
   {

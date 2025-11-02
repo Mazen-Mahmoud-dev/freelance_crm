@@ -2,10 +2,11 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-
-const AppLayout = ({ children }) => {
+import { Outlet } from "react-router-dom";
+const AppLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  console.log(sidebarOpen);
+  
   return (
     <div className="flex flex-col min-h-screen bg-bg text-text">
       {/* Header */}
@@ -29,10 +30,10 @@ const AppLayout = ({ children }) => {
         {/* Main Content */}
         <main
           className={`flex-1 p-section transition-all duration-300 ${
-            sidebarOpen ? "ml-0 md:ml-64" : ""
+            !sidebarOpen ? "ml-0 md:ml-64" : ""
           }`}
         >
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

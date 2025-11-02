@@ -1,13 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Menu, Bell, User, Sun, Moon, X } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Header({ theme = "light", onToggleSidebar }) {
   const { darkMode, toggleTheme } = useTheme();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const menuRef = useRef();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Prevent scroll when mobile dropdown is open
+  useEffect(() => {
+    if (userMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [userMenuOpen]);
 
   return (
     <header
@@ -29,6 +47,7 @@ export default function Header({ theme = "light", onToggleSidebar }) {
 
       {/* Actions */}
       <div className="flex items-center gap-4">
+        {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
           className="p-2 rounded-md hover:bg-primary/10 transition"
@@ -41,15 +60,45 @@ export default function Header({ theme = "light", onToggleSidebar }) {
           )}
         </button>
 
+        {/* Notifications */}
         <button className="p-2 rounded-md hover:bg-primary/10 transition">
           <Bell className="w-5 h-5 text-primary" />
         </button>
 
-        <button className="p-2 rounded-md hover:bg-primary/10 transition">
-          <User className="w-5 h-5 text-primary" />
-        </button>
+        {/* User Dropdown */}
+        <div ref={menuRef} className="relative">
+          <button
+            onClick={() => setUserMenuOpen((prev) => !prev)}
+            className="p-2 rounded-md hover:bg-primary/10 transition"
+          >
+            <User className="w-5 h-5 text-primary" />
+          </button>
 
-        {/* 🟦 Sidebar Toggle */}
+          {userMenuOpen && (
+            <>
+              {/* Mobile Overlay */}
+              <div
+                className="fixed inset-0 bg-black/40 z-40 md:hidden"
+                onClick={() => setUserMenuOpen(false)}
+              />
+
+              {/* Dropdown Menu */}
+              <div className="absolute right-0 mt-2 w-48 bg-bg border border-primary rounded-md shadow-lg z-50">
+                <button className="w-full px-4 py-2 hover:bg-primary/10 text-left">
+                  Profile
+                </button>
+                <button className="w-full px-4 py-2 hover:bg-primary/10 text-left">
+                  Settings
+                </button>
+                <button className="w-full px-4 py-2 hover:bg-primary/10 text-left">
+                  Logout
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Sidebar Toggle (Mobile) */}
         <button
           onClick={onToggleSidebar}
           className="p-2 rounded-md hover:bg-primary/10 transition md:hidden"
