@@ -62,3 +62,15 @@ export function useDeleteClient() {
     },
   });
 }
+export function useClient(clientId) {
+  const { user } = useAuth();
+
+  return useQuery({
+    queryKey: ["client", user?.id, clientId],
+    queryFn: async () => {
+      if (!user?.id || !clientId) return null;
+      return await clientService.getById(user.id, clientId);
+    },
+    enabled: !!user?.id && !!clientId,
+  });
+}

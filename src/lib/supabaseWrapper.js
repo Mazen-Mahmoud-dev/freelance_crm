@@ -2,37 +2,34 @@ import { supabase } from "./supabaseClient";
 import { handleSupabaseError } from "./errorHandler";
 
 export const supabaseWrapper = {
-  async from(table) {
+  from(table) {
     const ref = supabase.from(table);
     return {
-      async select(columns = "*", filterFn) {
-        let query = ref.select(columns);
-        if (filterFn) query = filterFn(query);
-        const { data, error } = await query;
-        if (error) throw handleSupabaseError(error);
-        return data;
+      select(columns = "*") {
+        return ref.select(columns);
       },
-
-      async insert(values) {
+      insert: async (values) => {
         const { data, error } = await ref.insert(values).select();
         if (error) throw handleSupabaseError(error);
         return data;
       },
-
-      async update(values, matchFn) {
-        let query = ref.update(values);
-        if (matchFn) query = matchFn(query);
-        const { data, error } = await query.select();
-        if (error) throw handleSupabaseError(error);
-        return data;
+      update: (values) => {
+        return {
+          eq: async (col, val) => {
+            const { data, error } = await ref.update(values).eq(col, val).select();
+            if (error) throw handleSupabaseError(error);
+            return data;
+          }
+        };
       },
-
-      async remove(matchFn) {
-        let query = ref.delete();
-        if (matchFn) query = matchFn(query);
-        const { error } = await query;
-        if (error) throw handleSupabaseError(error);
-        return true;
+      delete: () => {
+        return {
+          eq: async (col, val) => {
+            const { error } = await ref.delete().eq(col, val);
+            if (error) throw handleSupabaseError(error);
+            return true;
+          }
+        };
       },
     };
   },

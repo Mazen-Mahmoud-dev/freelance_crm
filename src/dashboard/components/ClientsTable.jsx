@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Trash2, View, ViewIcon } from "lucide-react"
 import Skeleton from "../../components/skeletons/Skeleton";
 import { useDeleteClient } from "../../hooks/useClients";
 import DeleteClientModal from "./DeleteClientModal";
+import { Link } from "react-router-dom";
 
 export default function ClientsTable({clients,loading}) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -123,7 +124,7 @@ export default function ClientsTable({clients,loading}) {
                     </td>
                     <td className="py-4 px-6 text-right">
                       <div className="actions flex items-center gap-3 justify-evenly">
-                        <button className=" text-sm bg-primary/20 hover:bg-primary/30 py-2 rounded-md px-2">
+                        <Link to={`/dashboard/clients/${client.id}`} className=" text-sm bg-primary/20 hover:bg-primary/30 py-2 rounded-md px-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -139,7 +140,7 @@ export default function ClientsTable({clients,loading}) {
                             <path d="M7 7h10v10"></path>
                             <path d="M7 17 17 7"></path>
                           </svg>
-                        </button>
+                        </Link>
                         <button
                           onClick={() => openModal(client)}
                           className="text-red-500 hover:text-red-700 transition"

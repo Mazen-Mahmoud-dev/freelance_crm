@@ -1,33 +1,48 @@
-import { supabase } from "../lib/supabaseClient";
 import { supabaseWrapper } from "../lib/supabaseWrapper";
 
 const table = "clients";
 
 export const clientService = {
-  async getAll() {
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError) throw userError;
+  async getAll(userId) {
+    const { data, error } = await supabaseWrapper
+      .from(table)
+      .select("*")
+      .eq("user_id", userId);
 
-    return await (
-      await supabaseWrapper.from(table)
-    ).select("*", (query) => query.eq("user_id", user.id));
+    if (error) throw error;
+
+    return data;
   },
-  async getById(id) {
-    return await (await supabaseWrapper.from(table)).select("*", (q) =>
-      q.eq("id", id)
-    );
+
+  async getById(userId, id) {
+    const { data, error } = await supabaseWrapper
+      .from(table)
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", userId)
+      .single();
+
+    if (error) throw error;
+
+    return data;
   },
+
   async create(client) {
-    return await (await supabaseWrapper.from(table)).insert(client);
+    return await supabaseWrapper.from(table).insert(client);
   },
+
   async update(id, data) {
-    return await (await supabaseWrapper.from(table)).update(data, (q) =>
-      q.eq("id", id)
-    );
+    return await supabaseWrapper
+      .from(table)
+      .update(data)
+      .eq("id", id);
   },
+
   async remove(id) {
-    return await (await supabaseWrapper.from(table)).remove((q) =>
-      q.eq("id", id)
-    );
+    await supabaseWrapper
+      .from(table)
+      .delete()
+      .eq("id", id);
+    return true;
   },
 };
