@@ -16,7 +16,7 @@ const AppLayout = () => {
       {/* Sidebar + Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-[900] md:hidden"
+          className="fixed inset-0 bg-black/40 z-10 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
