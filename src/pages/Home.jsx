@@ -9,6 +9,8 @@ import HowItWorks from './../sections/HowItWorks';
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 const Home = () => {
+  const [searchParams] = useSearchParams();
+  const { user, loading } = useAuth();
   useEffect(() => {
     const section = searchParams.get("scroll");
     if (section) {
@@ -20,8 +22,7 @@ const Home = () => {
       }
     }
   }, [searchParams]);
-  const [searchParams] = useSearchParams();
-  const { user, loading } = useAuth();
+  
 
   if (loading) return <div>Loading...</div>;
 
