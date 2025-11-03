@@ -57,7 +57,7 @@ export default function DashboardPage() {
             <p className="text-muted">Plan,manage, and accomplish your tasks with ease</p>
           </div>
           <div>
-            <button className="bg-primary text-white p-4 flex gap-4 rounded-md"><Plus /> Add Project</button>
+            <button className="bg-primary text-white px-5 py-3 flex items-center gap-2 rounded-lg shadow hover:scale-[1.02] transition-all"><Plus /> Add Project</button>
           </div>
         </div>
         {/* Stats Section */}

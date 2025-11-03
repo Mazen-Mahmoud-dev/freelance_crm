@@ -1,35 +1,26 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 
-export default function ClientsCard() {
-  const clients = Array.from({ length: 42 }).map((_, i) => ({
-    name: `Client ${i + 1}`,
-    email: `client${i + 1}@mail.com`,
-    projects: Math.floor(Math.random() * 8) + 1,
-    status: i % 2 === 0 ? "Active" : "Pending",
-  }));
-
+export default function ClientsCard({clients,loading}) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [clientsPerPage, setClientsPerPage] = useState(8);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const totalPages = Math.ceil(clients.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentClients = clients.slice(startIndex, startIndex + itemsPerPage);
 
-  const totalPages = Math.ceil(clients.length / clientsPerPage);
-  const startIndex = (currentPage - 1) * clientsPerPage;
-  const currentClients = clients.slice(startIndex, startIndex + clientsPerPage);
-
-  // pagination window logic (10 max)
   const maxVisiblePages = 10;
-  const startPage = Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
+  const startPage =
+    Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
   const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
-  const handleClientsPerPageChange = (e) => {
-    setClientsPerPage(Number(e.target.value));
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
     setCurrentPage(1);
   };
-
   return (
     <div className="space-y-6">
       {/* Header with Clients per page */}
@@ -39,21 +30,17 @@ export default function ClientsCard() {
           <span>Clients per page:</span>
           <div className="relative">
             <select
-              value={clientsPerPage}
-              onChange={handleClientsPerPageChange}
-              className="appearance-none bg-background border border-border text-text text-sm px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition"
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="appearance-none bg-background border border-primary text-text text-sm px-4 py-1 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer transition"
             >
               {[5, 8, 10, 15, 20, 25].map((num) => (
-                <option
-                  key={num}
-                  value={num}
-                  className="bg-card text-text"
-                >
+                <option key={num} value={num} className="bg-card text-text">
                   {num}
                 </option>
               ))}
             </select>
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted">
+            <span className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-muted">
               ▼
             </span>
           </div>
@@ -84,9 +71,18 @@ export default function ClientsCard() {
               Projects:{" "}
               <span className="text-text font-medium">{client.projects}</span>
             </p>
-            <button className="text-primary text-sm mt-2 self-end py-2 px-4 bg-primary/10 rounded-md hover:bg-primary/20 transition-colors">
-              View
-            </button>
+            <div className="actions flex items-center justify-between">
+              <button className="text-primary text-sm mt-2 self-end py-2 px-4 bg-primary/10 rounded-md hover:bg-primary/20 transition-colors">
+                View
+              </button>
+              <button
+                onClick={() => handleDelete(client.id)}
+                className="text-red-500 hover:text-red-700 transition"
+                title="Delete Client"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -97,14 +93,14 @@ export default function ClientsCard() {
           Showing{" "}
           <span className="font-medium text-text">{startIndex + 1}</span>–
           <span className="font-medium text-text">
-            {Math.min(startIndex + clientsPerPage, clients.length)}
+            {Math.min(startIndex + itemsPerPage, clients.length)}
           </span>{" "}
           of <span className="font-medium text-text">{clients.length}</span> clients
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => handlePageChange(currentPage - 1)}
+            onClick={() => handleItemsPerPageChange(currentPage - 1)}
             disabled={currentPage === 1}
             className="flex items-center gap-1 text-sm text-muted hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition"
           >
@@ -117,7 +113,7 @@ export default function ClientsCard() {
               return (
                 <button
                   key={pageNum}
-                  onClick={() => handlePageChange(pageNum)}
+                  onClick={() => handleItemsPerPageChange(pageNum)}
                   className={`px-3 py-1.5 rounded-md text-sm transition ${
                     currentPage === pageNum
                       ? "bg-primary text-white"
@@ -131,7 +127,7 @@ export default function ClientsCard() {
           </div>
 
           <button
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => handleItemsPerPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="flex items-center gap-1 text-sm text-muted hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition"
           >

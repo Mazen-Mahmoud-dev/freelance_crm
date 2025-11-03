@@ -10,11 +10,17 @@ import Auth from "../pages/Auth";
 import Verify from "../pages/Verify";
 import DashboardPage from "../dashboard/DashboardPage";
 import ClientPage from "../dashboard/pages/ClientsPage";
+import AddClient from "../dashboard/pages/AddClient";
+import { AuthProvider } from "../context/AuthContext";
 
 const router = createBrowserRouter([
   // 🟦 Public routes
   {
-    element: <PublicLayout />,
+    element: (
+    <AuthProvider>
+      <PublicLayout />
+    </AuthProvider>
+    ),
     children: [
       { path: "/", element: <Home /> },
       {
@@ -28,13 +34,16 @@ const router = createBrowserRouter([
   // 🟩 Protected routes
   {
     element: (
-      <ProtectedRoute>
-        <AppLayout />
-      </ProtectedRoute>
+      <AuthProvider>
+        <ProtectedRoute>
+          <AppLayout />
+        </ProtectedRoute>
+      </AuthProvider>
     ),
     children: [
       { path: "/dashboard", element: <DashboardPage /> },
-      { path: "/dashboard/clients", element: <ClientPage />}
+      { path: "/dashboard/clients", element: <ClientPage />},
+      { path: "/dashboard/clients/add",element: <AddClient />},
     ],
   },
   {

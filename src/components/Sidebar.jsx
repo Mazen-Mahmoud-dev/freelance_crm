@@ -14,7 +14,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   return (
     <aside
       className={`
-        fixed top-0 left-0 h-full w-64 z-[1000]
+        fixed top-0 left-0 h-full w-64 z-50
         bg-bg text-[var(--color-text)]
         border-r border-[var(--color-muted)]/20
         flex flex-col justify-start
@@ -43,6 +43,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <NavLink
             key={to}
             to={to}
+            end={to === "/dashboard"}
             className={({ isActive }) =>
               `
               flex items-center gap-3 px-6 py-3

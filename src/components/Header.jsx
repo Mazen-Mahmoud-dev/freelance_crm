@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Menu, Bell, User, Sun, Moon, X } from "lucide-react";
+import { Menu, Bell, User, Sun, Moon, LogOut } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
+import { useLogout } from "../hooks/useLogout";
 
 export default function Header({ theme = "light", onToggleSidebar }) {
   const { darkMode, toggleTheme } = useTheme();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const menuRef = useRef();
-
+  const { logout } = useLogout();
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -92,7 +93,11 @@ export default function Header({ theme = "light", onToggleSidebar }) {
                 <button className="w-full px-4 py-2 hover:bg-primary/10 text-left">
                   Settings
                 </button>
-                <button className="w-full px-4 py-2 hover:bg-primary/10 text-left">
+                <button
+                  onClick={logout}
+                  className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50 rounded-md transition"
+                >
+                  <LogOut className="w-4 h-4" />
                   Logout
                 </button>
               </div>
