@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Trash2, View, ViewIcon } from "lucide-react";
-import Skeleton from "../../components/skeletons/Skeleton";
-import { useDeleteClient } from "../../hooks/useClients";
+import Skeleton from "../../../components/skeletons/Skeleton";
+import { useDeleteClient } from "../../../hooks/useClients";
 import DeleteClientModal from "./DeleteClientModal";
 import { Link } from "react-router-dom";
 

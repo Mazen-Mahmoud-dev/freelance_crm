@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useClients } from "../../hooks/useClients";
-import ClientsTable from "../components/ClientsTable";
-import ClientsCard from "../components/ClientsCard";
+import ClientsTable from "../components/CLients/ClientsTable";
 import SearchFilterBar from "../components/SearchFilterBar";
 import Skeleton from "../../components/skeletons/Skeleton";
 import { useMemo, useState } from "react";
+import ClientsCard from './../components/CLients/ClientsCard';
+import Header from "../components/Header";
 
 export default function ClientsPage() {
   const { data: clients = [], isLoading, isError } = useClients();
@@ -19,23 +20,10 @@ export default function ClientsPage() {
   return (
     <div className="p-6 space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-start flex-wrap gap-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-3xl font-bold text-text">Clients</h2>
-          <p className="text-muted">
-            Manage your clients and monitor active projects.
-          </p>
-        </div>
-        <Link
-          to="add"
-          className="bg-primary text-white px-5 py-3 flex items-center gap-2 rounded-lg shadow hover:scale-[1.02] transition-all"
-        >
-          <Plus size={18} /> Add Client
-        </Link>
-      </div>
+      <Header title="Client" />
 
       {/* Search & Filter */}
-      <SearchFilterBar onSearch={setSearchQuery}  />
+      <SearchFilterBar onSearch={setSearchQuery} title={"clients"}  />
 
       {/* Loading / Error */}
       {isLoading && <Skeleton />}

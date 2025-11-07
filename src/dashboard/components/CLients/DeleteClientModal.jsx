@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { useDeleteClient } from "../../hooks/useClients";
+import { useDeleteClient } from "../../../hooks/useClients";
 
 export default function DeleteClientModal({ client, isOpen, onClose }) {
   const deleteClientMutation = useDeleteClient();

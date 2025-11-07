@@ -3,23 +3,40 @@ import { supabaseWrapper } from "../lib/supabaseWrapper";
 const table = "projects";
 
 export const projectService = {
-  async getAll() {
-    return await (await supabaseWrapper.from(table)).select("*");
+  async getAll(userId) {
+    const { data, error } = await supabaseWrapper
+      .from(table)
+      .select("*")
+      .eq("user_id", userId);
+
+    if (error) throw error;
+
+    return data;
   },
 
-  async getById(id) {
-    return await (await supabaseWrapper.from(table)).select("*", q => q.eq("id", id));
+  async getById(userId, id) {
+    const { data, error } = await supabaseWrapper
+      .from(table)
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", userId)
+      .single();
+
+    if (error) throw error;
+
+    return data;
   },
 
   async create(project) {
-    return await (await supabaseWrapper.from(table)).insert(project);
+    return await supabaseWrapper.from(table).insert(project);
   },
 
   async update(id, data) {
-    return await (await supabaseWrapper.from(table)).update(data, q => q.eq("id", id));
+    return await supabaseWrapper.from(table).update(data).eq("id", id);
   },
 
   async remove(id) {
-    return await (await supabaseWrapper.from(table)).remove(q => q.eq("id", id));
+    await supabaseWrapper.from(table).delete().eq("id", id);
+    return true;
   },
 };

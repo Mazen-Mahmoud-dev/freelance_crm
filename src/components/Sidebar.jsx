@@ -1,5 +1,5 @@
 // Sidebar.jsx
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { LayoutDashboard, Users, Folder, CheckSquare, Settings, X } from "lucide-react";
 
 const links = [
@@ -25,10 +25,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     >
       {/* Header (logo + close button on mobile) */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-muted)]/20">
-        <div className="flex items-center gap-2">
+        <Link to="/dashboard" className="flex items-center gap-2">
           <span className="text-xl font-bold text-primary">Freelance</span>
           <span className="text-muted font-medium">CRM</span>
-        </div>
+        </Link>
         <button
           onClick={onClose}
           className="p-2 rounded-md hover:bg-primary/10 md:hidden"

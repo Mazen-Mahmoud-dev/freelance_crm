@@ -1,10 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { projectService } from "../services/projectService";
 
-export function useProjects() {
+export function useProjects(userId) {
   return useQuery({
     queryKey: ["projects"],
-    queryFn: projectService.getAll,
+    queryFn: () => projectService.getAll(userId),
+    enabled: !!userId,
   });
 }
 

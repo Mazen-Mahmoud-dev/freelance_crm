@@ -1,27 +1,56 @@
+import React from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { ImageIcon } from "lucide-react";
 
-export default function ProjectCard({ id, title, status, dueDate }) {
-  const statusColor = {
-    "In Progress": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
-    Completed: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-    Pending: "bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-400",
-  }[status] || "bg-gray-100 text-gray-800";
+const statusColors = {
+  active: "bg-green-500/10 text-green-500 border-green-500/20",
+  completed: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+  archived: "bg-gray-500/10 text-gray-400 border-gray-500/20",
+};
+
+export default function ProjectCard({ project }) {
+  const { title, description, client_name, status, image_url } = project;
 
   return (
-    <Link to={`/projects/${id}`}>
-      <motion.div
-        whileHover={{ scale: 1.03 }}
-        className="p-5 bg-bg border border-muted/20 dark:border-muted/40 rounded-xl shadow-sm flex flex-col justify-between transition-all duration-300 cursor-pointer hover:shadow-lg"
-      >
-        <div className="flex justify-between items-start mb-4">
-          <h3 className="text-text font-semibold text-base md:text-lg">{title}</h3>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor}`}>
-            {status}
-          </span>
+    <motion.div
+      whileHover={{ scale: 1.015 }}
+      transition={{ duration: 0.2 }}
+      className="flex items-center justify-between w-full p-4 border rounded-2xl bg-white dark:bg-zinc-900 hover:border-indigo-500/50 transition-colors"
+    >
+      {/* Left side: Thumbnail */}
+      <div className="flex items-center gap-4 w-full">
+        {image_url ? (
+          <img
+            src={image_url}
+            alt={title}
+            className="w-16 h-16 rounded-xl object-cover"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
+            <ImageIcon className="w-5 h-5" />
+          </div>
+        )}
+
+        {/* Center: title + description */}
+        <div className="flex-1 overflow-hidden">
+          <h3 className="font-medium text-base truncate">{title}</h3>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2">
+            {description || "No description provided."}
+          </p>
         </div>
-        <p className="text-muted text-sm">Due: {dueDate}</p>
-      </motion.div>
-    </Link>
+      </div>
+
+      {/* Right side: status + client */}
+      <div className="flex flex-col items-end justify-between h-full">
+        <span
+          className={`capitalize px-3 py-1 rounded-full text-xs font-medium border ${statusColors[status] || statusColors.active}`}
+        >
+          {status}
+        </span>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-3">
+          {client_name || "Unknown Client"}
+        </p>
+      </div>
+    </motion.div>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, Bell, User, Sun, Moon, LogOut } from "lucide-react";
 import { useTheme } from "../hooks/useTheme";
 import { useLogout } from "../hooks/useLogout";
+import { Link } from 'react-router-dom';
 
 export default function Header({ theme = "light", onToggleSidebar }) {
   const { darkMode, toggleTheme } = useTheme();
@@ -43,10 +44,10 @@ export default function Header({ theme = "light", onToggleSidebar }) {
       `}
     >
       {/* Logo */}
-      <div className="flex items-center gap-2">
+      <Link to="/dashboard" className="flex items-center gap-2">
         <span className="text-xl font-bold text-primary">Freelance</span>
         <span className="text-muted font-medium">CRM</span>
-      </div>
+      </Link>
 
       {/* Actions */}
       <div className="flex items-center gap-4">
