@@ -1,6 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Eye, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const statusColors = {
   active: "bg-green-500/10 text-green-500 border-green-500/20",
@@ -9,47 +9,65 @@ const statusColors = {
 };
 
 export default function ProjectCard({ project }) {
-  const { title, description, client_name, status, image_url } = project;
-
+  const {id, title, description, client_name, status, thumbnail_url } = project;
+  
   return (
     <motion.div
-      whileHover={{ scale: 1.015 }}
-      transition={{ duration: 0.2 }}
-      className="flex items-center justify-between w-full p-4 border rounded-2xl bg-white dark:bg-zinc-900 hover:border-indigo-500/50 transition-colors"
+      whileHover={{ scale: 1.03 }}
+      className="relative group flex flex-col overflow-hidden border border-zinc-200 dark:border-primary rounded-2xl bg-bg dark:bg-zinc-900 shadow-sm hover:shadow-lg hover:border-primary transition-all duration-300"
     >
-      {/* Left side: Thumbnail */}
-      <div className="flex items-center gap-4 w-full">
-        {image_url ? (
-          <img
-            src={image_url}
+      {/* Thumbnail */}
+      <div className="relative w-full h-40 overflow-hidden">
+        {thumbnail_url ? (
+          <motion.img
+            src={thumbnail_url}
             alt={title}
-            className="w-16 h-16 rounded-xl object-cover"
+            className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-16 h-16 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-400">
-            <ImageIcon className="w-5 h-5" />
+          <div className="w-full h-full flex items-center justify-center bg-zinc-100 dark:bg-primary text-zinc-400">
+            <ImageIcon className="w-8 h-8" />
           </div>
         )}
 
-        {/* Center: title + description */}
-        <div className="flex-1 overflow-hidden">
-          <h3 className="font-medium text-base truncate">{title}</h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2">
-            {description || "No description provided."}
-          </p>
-        </div>
+        {/* Action buttons (show + delete) */}
+        <motion.div
+          initial={{ opacity: .75, y: 10 }}
+          whileHover={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100"
+        >
+          <Link to={`${id}`}
+            className="p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-primary hover:text-white transition"
+          >
+            <Eye className="w-4 h-4" />
+          </Link>
+          <button
+            className="p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-red-500 hover:text-white transition"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </motion.div>
       </div>
 
-      {/* Right side: status + client */}
-      <div className="flex flex-col items-end justify-between h-full">
-        <span
-          className={`capitalize px-3 py-1 rounded-full text-xs font-medium border ${statusColors[status] || statusColors.active}`}
-        >
-          {status}
-        </span>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-3">
-          {client_name || "Unknown Client"}
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-semibold text-base truncate">{title}</h3>
+          <span
+            className={`capitalize px-3 py-1 rounded-full text-xs font-medium border ${statusColors[status] || statusColors.active}`}
+          >
+            {status}
+          </span>
+        </div>
+
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-3">
+          {description || "No description provided."}
         </p>
+
+        <div className="mt-auto flex justify-between items-center text-xs text-zinc-500 dark:text-zinc-400">
+          <span>Client: {client_name || "Unknown Client"}</span>
+        </div>
       </div>
     </motion.div>
   );

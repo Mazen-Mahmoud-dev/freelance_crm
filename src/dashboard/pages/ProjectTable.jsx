@@ -38,22 +38,24 @@ export default function ProjectTable() {
   if (error) {
     return (
       <div className="p-4 bg-red-50 text-red-700 rounded">
-        حصل خطأ أثناء جلب المشاريع — حاول تاني.
-        <button className="ml-3 underline" onClick={refetch}>إعادة المحاولة</button>
+        An error occurred while fetching projects — please try again.
+        <button className="ml-3 underline" onClick={refetch}>Retry</button>
       </div>
     );
   }
 
+
   if (!projects || projects.length === 0) {
     return (
       <div className="p-6 border rounded-md text-center">
-        مفيش مشاريع لعرضها دلوقتي.
+        No projects to display right now.
         <div className="mt-4">
-          <button className="btn-primary">أضف مشروع جديد</button>
+          <button className="btn-primary">Add New Project</button>
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="overflow-x-auto bg-card rounded-md">

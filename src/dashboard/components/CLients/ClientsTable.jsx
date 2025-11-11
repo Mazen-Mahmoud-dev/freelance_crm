@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 export default function ClientsTable({clients,loading}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
-  const deleteClientMutation = useDeleteClient();
   const [selectedClient, setSelectedClient] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -21,19 +20,7 @@ export default function ClientsTable({clients,loading}) {
     setSelectedClient(null);
     setModalOpen(false);
   };
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this client?")) {
-      deleteClientMutation.mutate(id, {
-        onSuccess: () => {
-          alert("Client deleted successfully!");
-        },
-        onError: (error) => {
-          console.error(error);
-          alert("Failed to delete client.");
-        },
-      });
-    }
-  };
+  
   const totalPages = Math.ceil(clients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentClients = clients.slice(startIndex, startIndex + itemsPerPage);

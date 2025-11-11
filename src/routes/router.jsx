@@ -14,6 +14,8 @@ import AddClient from "../dashboard/pages/AddClient";
 import { AuthProvider } from "../context/AuthContext";
 import ClientDetails from "../dashboard/pages/ClientDetails";
 import ProjectsPage from "../dashboard/pages/ProjectsPage";
+import AddProject from "../dashboard/Projects/AddProject";
+import ProjectDetails from "../dashboard/pages/ProjectDetails";
 
 const router = createBrowserRouter([
   // 🟦 Public routes
@@ -48,6 +50,8 @@ const router = createBrowserRouter([
       { path: "/dashboard/clients/add",element: <AddClient />},
       {path: "/dashboard/clients/:id",element: <ClientDetails />},
       { path: "/dashboard/projects", element: <ProjectsPage />},
+      { path: "/dashboard/projects/add", element: <AddProject />},
+      { path: "/dashboard/projects/:id", element: <ProjectDetails />},
     ],
   },
   {

@@ -8,6 +8,13 @@ export function useProjects(userId) {
     enabled: !!userId,
   });
 }
+export function useProject(userId, id) {
+  return useQuery({
+    queryKey: ["project", userId, id],
+    queryFn: () => projectService.getById(userId, id),
+    enabled: !!userId && !!id,
+  });
+}
 
 export function useCreateProject() {
   const queryClient = useQueryClient();

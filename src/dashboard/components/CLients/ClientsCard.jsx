@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import DeleteClientModal from "./DeleteClientModal";
 
 export default function ClientsCard({clients,loading}) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -7,7 +9,8 @@ export default function ClientsCard({clients,loading}) {
   const totalPages = Math.ceil(clients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentClients = clients.slice(startIndex, startIndex + itemsPerPage);
-
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
   const maxVisiblePages = 10;
   const startPage =
     Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
@@ -15,6 +18,16 @@ export default function ClientsCard({clients,loading}) {
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const openModal = (client) => {
+    setSelectedClient(client);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedClient(null);
+    setModalOpen(false);
   };
 
   const handleItemsPerPageChange = (e) => {
@@ -72,11 +85,11 @@ export default function ClientsCard({clients,loading}) {
               <span className="text-text font-medium">{client.projects}</span>
             </p>
             <div className="actions flex items-center justify-between">
-              <button className="text-primary text-sm mt-2 self-end py-2 px-4 bg-primary/10 rounded-md hover:bg-primary/20 transition-colors">
+              <Link to={`/dashboard/clients/${client.id}`} className="text-primary text-sm mt-2 self-end py-2 px-4 bg-primary/10 rounded-md hover:bg-primary/20 transition-colors">
                 View
-              </button>
+              </Link>
               <button
-                onClick={() => handleDelete(client.id)}
+                onClick={() => openModal(client)}
                 className="text-red-500 hover:text-red-700 transition"
                 title="Delete Client"
               >
@@ -85,6 +98,13 @@ export default function ClientsCard({clients,loading}) {
             </div>
           </div>
         ))}
+        {selectedClient && (
+          <DeleteClientModal
+            client={selectedClient}
+            isOpen={isModalOpen}
+            onClose={closeModal}
+          />
+        )}
       </div>
 
       {/* Pagination */}
