@@ -4,12 +4,15 @@ import { useProject } from './../../hooks/useProjects';
 import StatCard from "../../components/StatCard";
 import { motion } from 'framer-motion';
 import { useAuth } from "../../context/AuthContext";
+import { Trash2 } from "lucide-react";
+import DeleteProjectModal from "../Projects/DeleteProjectModal";
+import { useState } from "react";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { user } = useAuth()
   const { data: project, isLoading, isError } = useProject(user?.id,id);
-  console.log(project);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   
   if (isLoading) return <Skeleton />;
@@ -31,8 +34,8 @@ const ProjectDetails = () => {
             <button className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition">
               Edit Project
             </button>
-            <button className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
-              Delete Project
+            <button onClick={() => setIsModalOpen(true)} className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
+              <Trash2 className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -119,6 +122,15 @@ const ProjectDetails = () => {
           </div>
         </div>
       </div>
+
+
+
+      {/* Delete Project Modal */}
+      <DeleteProjectModal
+        project={project}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   )
 }
