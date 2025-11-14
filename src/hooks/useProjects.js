@@ -37,3 +37,18 @@ export function useDeleteProject() {
     },
   });
 }
+
+export function useUpdateProject() {
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
+
+  return useMutation({
+    mutationFn: async ({ id, data }) => {
+      return await projectService.update(id, data);
+    },
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries(["projects", user?.id]);
+      queryClient.invalidateQueries(["project", id]);
+    },
+  });
+}

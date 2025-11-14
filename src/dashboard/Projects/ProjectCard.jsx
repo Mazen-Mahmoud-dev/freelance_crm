@@ -3,6 +3,7 @@ import { ImageIcon, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteProjectModal from "./DeleteProjectModal";
+import EditProjectModal from "./EditProjectModal";
 
 const statusColors = {
   active: "bg-green-500/10 text-green-500 border-green-500/20",
@@ -12,7 +13,7 @@ const statusColors = {
 
 export default function ProjectCard({ project }) {
   const {id, title, description, client_name, status, thumbnail_url } = project;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
@@ -45,7 +46,7 @@ export default function ProjectCard({ project }) {
             <Eye className="w-4 h-4" />
           </Link>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsDeleteOpen(true)}
             className="p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-red-500 hover:text-white transition"
           >
             <Trash2 className="w-4 h-4" />
@@ -72,12 +73,11 @@ export default function ProjectCard({ project }) {
           <span>Client: {client_name || "Unknown Client"}</span>
         </div>
       </div>
-
       {/* Delete Project Modal */}
       <DeleteProjectModal
         project={project}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
       />
     </motion.div>
   );

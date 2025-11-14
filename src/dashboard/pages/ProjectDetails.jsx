@@ -7,13 +7,15 @@ import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
 import DeleteProjectModal from "../Projects/DeleteProjectModal";
 import { useState } from "react";
+import EditProjectModal from "../Projects/EditProjectModal";
+import { FiEdit } from "react-icons/fi";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { user } = useAuth()
   const { data: project, isLoading, isError } = useProject(user?.id,id);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   
   if (isLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load project.</div>;
@@ -31,10 +33,10 @@ const ProjectDetails = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition">
-              Edit Project
+            <button onClick={() => setIsEditOpen(true)} className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition">
+              <FiEdit className="w-4 h-4" />
             </button>
-            <button onClick={() => setIsModalOpen(true)} className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
+            <button onClick={() => setIsDeleteOpen(true)} className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
               <Trash2 className="w-4 h-4" />
             </button>
           </div>
@@ -123,13 +125,18 @@ const ProjectDetails = () => {
         </div>
       </div>
 
-
+      {/* Edit Modal */}
+      <EditProjectModal
+        project={project}
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+      />
 
       {/* Delete Project Modal */}
       <DeleteProjectModal
         project={project}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
       />
     </div>
   )
