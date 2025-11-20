@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from "./context/AuthContext";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
+import 'react-medium-image-zoom/dist/styles.css';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

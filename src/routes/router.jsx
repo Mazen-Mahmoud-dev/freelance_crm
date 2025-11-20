@@ -16,6 +16,7 @@ import ClientDetails from "../dashboard/pages/ClientDetails";
 import ProjectsPage from "../dashboard/pages/ProjectsPage";
 import AddProject from "../dashboard/Projects/AddProject";
 import ProjectDetails from "../dashboard/pages/ProjectDetails";
+import TasksPage from "../dashboard/pages/TasksPage";
 
 const router = createBrowserRouter([
   // 🟦 Public routes
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: "/dashboard/projects", element: <ProjectsPage />},
       { path: "/dashboard/projects/add", element: <AddProject />},
       { path: "/dashboard/projects/:id", element: <ProjectDetails />},
+      { path: "/dashboard/tasks", element: <TasksPage />},
     ],
   },
   {
