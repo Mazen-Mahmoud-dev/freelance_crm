@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteProjectModal from "./DeleteProjectModal";
 import EditProjectModal from "./EditProjectModal";
+import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
+import { useDeleteProject } from "../../hooks/useProjects";
 
 const statusColors = {
   active: "bg-green-500/10 text-green-500 border-green-500/20",
@@ -12,8 +14,9 @@ const statusColors = {
 };
 
 export default function ProjectCard({ project }) {
+  const { mutate: deleteProject, isLoading } = useDeleteProject();
   const {id, title, description, client_name, status, thumbnail_url } = project;
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
@@ -46,7 +49,7 @@ export default function ProjectCard({ project }) {
             <Eye className="w-4 h-4" />
           </Link>
           <button
-            onClick={() => setIsDeleteOpen(true)}
+            onClick={() => setOpenDeleteProjectModal(true)}
             className="p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-red-500 hover:text-white transition"
           >
             <Trash2 className="w-4 h-4" />
@@ -73,11 +76,16 @@ export default function ProjectCard({ project }) {
           <span>Client: {client_name || "Unknown Client"}</span>
         </div>
       </div>
+
+      
       {/* Delete Project Modal */}
-      <DeleteProjectModal
-        project={project}
-        isOpen={isDeleteOpen}
-        onClose={() => setIsDeleteOpen(false)}
+      <ConfirmDeleteModal
+        item={project}
+        isOpen={OpenDeleteProjectModal}
+        onClose={() => setOpenDeleteProjectModal(false)}
+        deleteMutation={{ mutate: deleteProject, isLoading }}
+        title="Delete Project"
+        onSuccessRedirect="/dashboard/projects"
       />
     </motion.div>
   );
