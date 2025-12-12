@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { ImageIcon, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import DeleteProjectModal from "./DeleteProjectModal";
 import EditProjectModal from "./EditProjectModal";
 import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
 import { useDeleteProject } from "../../hooks/useProjects";

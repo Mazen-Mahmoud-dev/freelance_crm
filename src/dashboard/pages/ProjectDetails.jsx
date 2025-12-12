@@ -5,7 +5,6 @@ import StatCard from "../../components/StatCard";
 import { motion } from 'framer-motion';
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
-import DeleteProjectModal from "../Projects/DeleteProjectModal";
 import { useState } from "react";
 import EditProjectModal from "../Projects/EditProjectModal";
 import { FiEdit } from "react-icons/fi";
@@ -16,9 +15,8 @@ const ProjectDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const { data: project, isLoading, isError } = useProject(user?.id, id);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
+  const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
   if (isLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load project.</div>;
   if (!project) return <div className="text-gray-500">Project not found.</div>;
@@ -47,7 +45,7 @@ const ProjectDetails = () => {
             </button>
 
             <button
-              onClick={() => setIsDeleteOpen(true)}
+              onClick={() => setOpenDeleteProjectModal(true)}
               className="p-2 rounded-xl border border-border hover:bg-primary/30 transition flex items-center justify-center"
             >
               <Trash2 className="w-5 h-5 text-red-500" />
@@ -154,7 +152,14 @@ const ProjectDetails = () => {
       </div>
 
       <EditProjectModal project={project} isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
-      <DeleteProjectModal project={project} isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} />
+      <ConfirmDeleteModal
+        item={project}
+        isOpen={OpenDeleteProjectModal}
+        onClose={() => setOpenDeleteProjectModal(false)}
+        deleteMutation={{ mutate: deleteProject, isLoading }}
+        title="Delete Project"
+        onSuccessRedirect="/dashboard/projects"
+      />
     </div>
   );
 };
