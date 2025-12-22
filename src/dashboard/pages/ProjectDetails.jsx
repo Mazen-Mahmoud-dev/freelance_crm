@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import Skeleton from "../../components/skeletons/Skeleton";
-import { useProject } from './../../hooks/useProjects';
+import { useDeleteProject, useProject } from './../../hooks/useProjects';
 import StatCard from "../../components/StatCard";
 import { motion } from 'framer-motion';
 import { useAuth } from "../../context/AuthContext";
@@ -10,14 +10,16 @@ import EditProjectModal from "../Projects/EditProjectModal";
 import { FiEdit } from "react-icons/fi";
 import Zoom from "react-medium-image-zoom";
 import ProjectTasksSection from "../components/ProjectTasksSection";
+import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
-  const { data: project, isLoading, isError } = useProject(user?.id, id);
+  const { data: project, projectLoading, isError } = useProject(user?.id, id);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const { mutate: deleteProject, deleteLoading  } = useDeleteProject();
   const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
-  if (isLoading) return <Skeleton />;
+  if (projectLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load project.</div>;
   if (!project) return <div className="text-gray-500">Project not found.</div>;
 
@@ -156,7 +158,7 @@ const ProjectDetails = () => {
         item={project}
         isOpen={OpenDeleteProjectModal}
         onClose={() => setOpenDeleteProjectModal(false)}
-        deleteMutation={{ mutate: deleteProject, isLoading }}
+        deleteMutation={{ mutate: deleteProject,isLoading: deleteLoading }}
         title="Delete Project"
         onSuccessRedirect="/dashboard/projects"
       />

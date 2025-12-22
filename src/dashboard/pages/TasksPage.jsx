@@ -36,7 +36,8 @@ const TasksPage = () => {
   }, [tasks, filter, sortBy]);
   if (isLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load tasks.</div>;
-
+  
+  
   
 
   return (
@@ -202,6 +203,8 @@ const TasksPage = () => {
                 <button className="p-2 rounded-lg hover:bg-gray-200/40 transition" 
                   onClick={() => {
                     setTaskToDelete(task);
+                    console.log(taskToDelete);
+                    if (!task?.id) return alert("Cannot delete task without ID");
                     setOpenDeleteTaskModal(true);
                   }}>
                   <FiTrash2 className="w-4 h-4 text-red-500" />
@@ -230,7 +233,6 @@ const TasksPage = () => {
         onClose={() => setOpenDeleteTaskModal(false)}
         deleteMutation={{ mutate: deleteTask, isModalLoading }}
         title="Delete Task"
-        onSuccessRedirect="/dashboard/tasks"
       />)
       }
       

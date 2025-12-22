@@ -5,7 +5,7 @@ const table = "tasks";
 export const taskService = {
   async getAllWithProject() {
     const { data, error } = await supabaseWrapper
-      .from("tasks")
+      .from(table)
       .select(`
         *,
         project:project_id (
@@ -31,6 +31,7 @@ export const taskService = {
       .from(table)
       .select("*")
       .eq("id", id)
+      .eq("user_id", userId)
       .single();
 
     if (error) throw error;
@@ -39,9 +40,9 @@ export const taskService = {
   },
 
   async create(task) {
-    const { data, error } = await supabaseWrapper.from(table).insert(task).select();
+    const { data, error } = await supabaseWrapper.from(table).insert(task);
     if (error) throw error;
-    return data[0];
+    return data;
   },
 
   async update(id, data) {
