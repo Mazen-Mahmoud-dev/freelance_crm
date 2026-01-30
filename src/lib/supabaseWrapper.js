@@ -13,17 +13,14 @@ export const supabaseWrapper = {
         if (error) throw handleSupabaseError(error);
         return data;
       },
-      update: (values) => {
-        return {
-          eq: async (col, val) => {
-            const { data, error } = await ref.update(values).eq(col, val).select();
-            if (error) throw handleSupabaseError(error);
-            return data;
-          }
-        };
+      update: async (id, values) => {
+        const { data, error } = await ref.update(values).eq("id", id).select("*");
+        if (error) throw handleSupabaseError(error);
+        return data[0]; // single row
       },
       delete: () => {
         return {
+
           eq: async (col, val) => {
             const { error } = await ref.delete().eq(col, val);
             if (error) throw handleSupabaseError(error);

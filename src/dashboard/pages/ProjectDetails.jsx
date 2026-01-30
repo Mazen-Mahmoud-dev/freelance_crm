@@ -2,27 +2,46 @@ import { useParams } from "react-router-dom";
 import Skeleton from "../../components/skeletons/Skeleton";
 import { useDeleteProject, useProject } from './../../hooks/useProjects';
 import StatCard from "../../components/StatCard";
-import { motion } from 'framer-motion';
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditProjectModal from "../Projects/EditProjectModal";
 import { FiEdit } from "react-icons/fi";
 import Zoom from "react-medium-image-zoom";
 import ProjectTasksSection from "../components/ProjectTasksSection";
 import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
+import { useTasks } from './../../hooks/useTasks';
+import { projectService } from "../../services/projectService";
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const [completedCount,setCompletedCount] = useState(0);
+  const { data: tasks=[] } = useTasks();
+  console.log(tasks);
+  
   const { data: project, projectLoading, isError } = useProject(user?.id, id);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { mutate: deleteProject, deleteLoading  } = useDeleteProject();
+  console.log("project: ",project);
+  
   const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
+  useEffect(()=>{
+    if (!project?.id) return;
+    const fetchCompletedTasks = async () => {
+      const count = await projectService.countCompletedTasks(project.id);
+      console.log(count);
+      
+      setCompletedCount(count);
+    };
+
+    fetchCompletedTasks(); 
+  },[project?.id])
   if (projectLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load project.</div>;
   if (!project) return <div className="text-gray-500">Project not found.</div>;
-
   return (
     <div className="min-h-screen bg-bg p-6 md:p-10">
       <div className="max-w-5xl mx-auto bg-card shadow-lg rounded-2xl border border-border p-8">
@@ -57,9 +76,9 @@ const ProjectDetails = () => {
 
         {/* STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-          <StatCard title="Tasks" value={project.tasks_count || 0} />
-          <StatCard title="Completed" value={project.completed_tasks || 0} />
-          <StatCard title="Progress" value={`${project.progress || 0}%`} />
+          <StatCard title="Tasks" value={0} /> {/* tasks?.length ||  */}
+          <StatCard title="Completed" value={completedCount || 0} />
+          <StatCard title="Progress" value={`${completedCount / tasks.length * 100}%`} />
         </div>
 
         {/* INFO SECTIONS */}

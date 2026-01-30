@@ -6,7 +6,6 @@ const links = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/dashboard/clients", label: "Clients", icon: Users },
   { to: "/dashboard/projects", label: "Projects", icon: Folder },
-  { to: "/dashboard/tasks", label: "Tasks", icon: CheckSquare },
   { to: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

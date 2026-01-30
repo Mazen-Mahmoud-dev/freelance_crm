@@ -39,4 +39,14 @@ export const projectService = {
     await supabaseWrapper.from(table).delete().eq("id", id);
     return true;
   },
+  async countCompletedTasks(projectId){
+    const { data, error } = await supabaseWrapper
+      .from('projects_with_completed_tasks')
+      .select('completed_tasks')
+      .eq('id', projectId)
+      .single();
+    
+    if (error) console.error(error);
+    return data.completed_tasks
+  },
 };

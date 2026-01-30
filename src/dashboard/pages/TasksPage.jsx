@@ -1,27 +1,31 @@
 import { useState, useMemo } from "react";
 import { useDeleteTask, useTasks } from "../../hooks/useTasks";
-import { motion } from "framer-motion";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Skeleton from "../../components/skeletons/Skeleton";
 import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
+import EditTaskModal from "../components/EditTaskModal";
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 
-const TasksPage = () => {
+const TasksPage = ({project}) => {
   const { data: tasks, isLoading, isError } = useTasks();
-  console.log("tasks: ",tasks);
-  
   const [openSort, setOpenSort] = useState(false);
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const { mutate: deleteTask,isModalLoading } = useDeleteTask();
   const [OpenDeleteTaskModal, setOpenDeleteTaskModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
+  const [openEditTaskModal, setOpenEditTaskModal] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState(null);
   // Filtering
   const filteredTasks = useMemo(() => {
     let filtered = [...(tasks || [])];
-
-    if (filter === "pending") filtered = filtered.filter(t => !t.completed);
-    if (filter === "done") filtered = filtered.filter(t => t.completed);
+    console.log(filtered);
+    
+    if (filter === "pending") filtered = filtered.filter(t => t.status === "Pending");
+    if (filter === "in_progress") filtered = filtered.filter(t => t.status === "In Progress");
+    if (filter === "completed") filtered = filtered.filter(t => t.status === "Completed");
 
     // Sorting
     if (sortBy === "newest") {
@@ -37,16 +41,16 @@ const TasksPage = () => {
   if (isLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load tasks.</div>;
   
-  
+  console.log("tasks: ",tasks)
   
 
   return (
-    <div className="min-h-screen bg-bg p-6 md:p-10">
+    <div className="bg-bg py-12">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold text-foreground">Tasks</h1>
         <Link
-          to="/dashboard/tasks/add"
+          to={`/projects/${project.id}/tasks/add`}
           className="px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition"
         >
           Add Task
@@ -77,16 +81,26 @@ const TasksPage = () => {
           >
             Pending
           </button>
-
           <button
-            onClick={() => setFilter("done")}
+            onClick={() => setFilter("in_progress")}
             className={`px-3 py-1 rounded-md border ${
-              filter === "done"
+              filter === "in_progress"
                 ? "bg-primary text-white"
                 : "bg-card border-border text-foreground"
             }`}
           >
-            Done
+            In Progress
+          </button>
+
+          <button
+            onClick={() => setFilter("completed")}
+            className={`px-3 py-1 rounded-md border ${
+              filter === "Completed"
+                ? "bg-primary text-white"
+                : "bg-card border-border text-foreground"
+            }`}
+          >
+            Completed
           </button>
         </div>
 
@@ -179,31 +193,34 @@ const TasksPage = () => {
               <div className="flex justify-between items-center mt-2">
                 <span
                   className={`px-2 py-1 text-xs rounded-md font-medium shadow-header ${
-                    task.completed
+                    task.status == "Completed"
                       ? "bg-green-200/50 text-green-700"
                       : "bg-yellow-200/50 text-yellow-800"
                   }`}
                 >
-                  {task.completed ? "Done" : "Pending"}
+                  {task.status}
                 </span>
 
-                <Link
-                  to={`/dashboard/projects/${task.project_id}`}
-                  className="text-blue-500 hover:underline text-sm"
+                <span
+                  className="text-gray-400 hover:underline text-sm"
                 >
-                  {task.project_name || "Project"}
-                </Link>
+                  {task?.due_date || null}
+                </span>
               </div>
 
               {/* Edit / Delete */}
               <div className="flex justify-end gap-2 mt-3">
-                <button className="p-2 rounded-lg hover:bg-gray-200/40 transition">
+                <button className="p-2 rounded-lg hover:bg-gray-200/40 transition"
+                  onClick={() => {
+                    setTaskToEdit(task);
+                    setOpenEditTaskModal(true);
+                  }}
+                >
                   <FiEdit className="w-4 h-4 text-primary" />
                 </button>
                 <button className="p-2 rounded-lg hover:bg-gray-200/40 transition" 
                   onClick={() => {
                     setTaskToDelete(task);
-                    console.log(taskToDelete);
                     if (!task?.id) return alert("Cannot delete task without ID");
                     setOpenDeleteTaskModal(true);
                   }}>
@@ -219,12 +236,6 @@ const TasksPage = () => {
       ) : (
         <div className="text-center py-20 text-muted-foreground">
           <p className="text-lg">No tasks yet.</p>
-          <Link
-            to="/dashboard/tasks/add"
-            className="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition"
-          >
-            Create your first task
-          </Link>
         </div>
       )}
       {taskToDelete && (<ConfirmDeleteModal
@@ -235,6 +246,14 @@ const TasksPage = () => {
         title="Delete Task"
       />)
       }
+      {taskToEdit && (
+        <EditTaskModal
+          isOpen={openEditTaskModal}
+          onClose={() => setOpenEditTaskModal(false)}
+          task={taskToEdit}
+          title="Update Task"
+        />
+      )}
       
     </div>
   );

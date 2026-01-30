@@ -13,7 +13,7 @@ export function useClients() {
       if (!user?.id) return [];
       return await clientService.getAll(user.id);
     },
-    enabled: !!user?.id, // ⛔️ مايحملش قبل ما اليوزر يكون موجود
+    enabled: !!user?.id,
   });
 }
 

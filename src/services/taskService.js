@@ -26,7 +26,7 @@ export const taskService = {
   },
 
 
-  async getById(id) {
+  async getById(id,userId) {
     const { data, error } = await supabaseWrapper
       .from(table)
       .select("*")
@@ -46,13 +46,7 @@ export const taskService = {
   },
 
   async update(id, data) {
-    const { data: updated, error } = await supabaseWrapper
-      .from(table)
-      .update(data)
-      .eq("id", id)
-      .select();
-    if (error) throw error;
-    return updated[0];
+    return await supabaseWrapper.from(table).update(id, data);
   },
 
   async remove(id) {
