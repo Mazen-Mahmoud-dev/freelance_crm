@@ -2,6 +2,7 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-primary: oklch(0.68 0.18 230);
@@ -25,6 +26,7 @@
   --color-muted: oklch(0.7 0.02 250);
   --shadow-header: 0 2px 6px rgb(255 255 255 / 0.05);
   --color-main-background: oklch(28.966% 0.05662 248.815);
+  /* --color-accent: oklch(66.26% 0.17451 149.373); */
 }
 /* Apply base styles using variables */
 *{

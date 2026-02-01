@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from "tailwindcss/plugin";
 export default {
   darkMode: 'class',
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant("dark", '&[data-theme="dark"], [data-theme="dark"] &');
+    }),
+  ],
 };  

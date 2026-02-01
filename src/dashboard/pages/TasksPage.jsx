@@ -194,8 +194,8 @@ const TasksPage = ({project}) => {
                 <span
                   className={`px-2 py-1 text-xs rounded-md font-medium shadow-header ${
                     task.status == "Completed"
-                      ? "bg-green-200/50 text-green-700"
-                      : "bg-yellow-200/50 text-yellow-800"
+                      ? "bg-green-200/50 dark:bg-green-200 text-green-700 "
+                      : task.status == "Pending" ? "bg-red-200/50 text-red-700 dark:bg-red-200" : "bg-yellow-200/50 text-yellow-800 dark:bg-yellow-200"
                   }`}
                 >
                   {task.status}
