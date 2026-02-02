@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { ImageIcon, Eye, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -14,7 +15,7 @@ const statusColors = {
 
 export default function ProjectCard({ project }) {
   const { mutate: deleteProject, isLoading } = useDeleteProject();
-  const {id, title, description, client_name, status, thumbnail_url } = project;
+  const {id, title, description, client_name, status, thumbnail_url, client_id } = project;
   const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
   return (
     <motion.div
@@ -70,9 +71,8 @@ export default function ProjectCard({ project }) {
         <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-3">
           {description || "No description provided."}
         </p>
-
-        <div className="mt-auto flex justify-between items-center text-xs text-zinc-500 dark:text-zinc-400">
-          <span>Client: {client_name || "Unknown Client"}</span>
+        <div className="mt-auto flex justify-start gap-2 items-center text-xs ">
+        Client: <Link to={`/dashboard/clients/${client_id}`} className="text-zinc-500 dark:text-zinc-400 dark:hover:text-zinc-300 hover:text-gray-700">{client_name || "Unknown Client"}</Link>
         </div>
       </div>
 

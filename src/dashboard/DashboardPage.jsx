@@ -12,10 +12,12 @@ import ChartSkeleton from "../components/skeletons/ChartSkeleton";
 import { Plus } from "lucide-react";
 import RevenueChart from "./components/RevenueChart";
 import ProjectsChart from "./components/ProjectsChart";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
-
+  const { user } = useAuth();
   // Mock data
   const stats = [
     { id: 1, title: "Projects", value: 12 },
@@ -30,21 +32,22 @@ export default function DashboardPage() {
     { id: 3, title: "Landing Page", status: "Completed", dueDate: "Oct 30" },
   ];
 
-  const recentActivities = [
-    { id: 1, user: "Alice", action: "added a new project", time: "2h ago" },
-    { id: 2, user: "Bob", action: "completed a task", time: "5h ago" },
-    { id: 3, user: "Charlie", action: "sent an invoice", time: "1d ago" },
-  ];
+  // const recentActivities = [
+  //   { id: 1, user: "Alice", action: "added a new project", time: "2h ago" },
+  //   { id: 2, user: "Bob", action: "completed a task", time: "5h ago" },
+  //   { id: 3, user: "Charlie", action: "sent an invoice", time: "1d ago" },
+  // ];
 
-  const chartData = [
-    { name: "Completed", value: 5 },
-    { name: "In Progress", value: 4 },
-    { name: "Pending", value: 3 },
-  ];
+  // const chartData = [
+  //   { name: "Completed", value: 5 },
+  //   { name: "In Progress", value: 4 },
+  //   { name: "Pending", value: 3 },
+  // ];
 
   // Simulate API loading
+  
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
+    const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -57,7 +60,7 @@ export default function DashboardPage() {
             <p className="text-muted">Plan,manage, and accomplish your tasks with ease</p>
           </div>
           <div>
-            <button className="bg-primary text-white px-5 py-3 flex items-center gap-2 rounded-lg shadow hover:scale-[1.02] transition-all"><Plus /> Add Project</button>
+            <Link to="projects/add" className="bg-primary text-white px-5 py-3 flex items-center gap-2 rounded-lg shadow hover:scale-[1.02] transition-all"><Plus /> Add Project</Link>
           </div>
         </div>
         {/* Stats Section */}
@@ -77,7 +80,7 @@ export default function DashboardPage() {
               {projects.map((p) => <ProjectCardSkeleton key={p.id} />)}
             </div>
           ) : (
-            <ProjectList projects={projects} />
+            <ProjectList userId={user?.id} />
           )}
         </section>
 

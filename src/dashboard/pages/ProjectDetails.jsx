@@ -41,7 +41,7 @@ const ProjectDetails = () => {
   },[project?.id])
   if (projectLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load project.</div>;
-  if (!project) return <div className="text-gray-500">Project not found.</div>;
+  if (!project) return <div className="text-gray-500">Project Loading.</div>;
   return (
     <div className="min-h-screen bg-bg p-6 md:p-10">
       <div className="max-w-5xl mx-auto bg-card shadow-lg rounded-2xl border border-border p-8">
@@ -50,10 +50,10 @@ const ProjectDetails = () => {
         <div className="flex items-start justify-between mb-10">
           <div>
             <h1 className="text-4xl font-bold text-foreground tracking-tight">
-              Project Title: {project.title}
+              {project.title}
             </h1>
-            <p className="text-muted-foreground mt-1">
-              Client: <span className="font-medium">{project.client_name}</span>
+            <p className="text-sm mt-1">
+              <span>{project.client_name}</span>
             </p>
           </div>
 
