@@ -1,11 +1,16 @@
 import StatCard from "../../components/StatCard";
 import { Folder, Users, DollarSign, CheckCircle } from "lucide-react";
+import { useProjects } from "../../hooks/useProjects";
+import { useClients } from "../../hooks/useClients";
 
-export default function DashboardStats() {
-  // Mock data - لاحقاً ممكن تجي من API
+export default function DashboardStats({userId}) {
+  const { data: projects = [], isLoading: projectsLoading} = useProjects(userId);
+  const { data: clients = [],isLoading:clientsLoading } = useClients();
+  const projectsCount = projectsLoading ? "—" : projects.length
+  const clientsCount = clientsLoading ? "-" : clients.length
   const stats = [
-    { id: 1, title: "Projects", value: 12, icon: Folder },
-    { id: 2, title: "Clients", value: 8, icon: Users },
+    { id: 1, title: "Projects", value: projectsCount, icon: Folder },
+    { id: 2, title: "Clients", value: clientsCount, icon: Users },
     { id: 3, title: "Invoices", value: 5, icon: DollarSign },
     { id: 4, title: "Pending Tasks", value: 3, icon: CheckCircle },
   ];

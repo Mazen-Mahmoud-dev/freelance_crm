@@ -69,7 +69,7 @@ export default function DashboardPage() {
             {stats.map((s) => <StatCardSkeleton key={s.id} />)}
           </div>
         ) : (
-          <DashboardStats />
+          <DashboardStats userId={user?.id} />
         )}
 
         {/* Projects Section */}

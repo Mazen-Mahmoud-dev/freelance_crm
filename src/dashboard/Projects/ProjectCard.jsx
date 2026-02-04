@@ -43,7 +43,7 @@ export default function ProjectCard({ project }) {
           transition={{ duration: 0.3 }}
           className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100"
         >
-          <Link to={`${id}`}
+          <Link to={`/dashboard/projects/${id}`}
             className="p-2 rounded-full bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm hover:bg-primary hover:text-white transition"
           >
             <Eye className="w-4 h-4" />
