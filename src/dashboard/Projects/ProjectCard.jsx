@@ -35,8 +35,6 @@ export default function ProjectCard({ project }) {
             <ImageIcon className="w-8 h-8" />
           </div>
         )}
-
-        {/* Action buttons (show + delete) */}
         <motion.div
           initial={{ opacity: .75, y: 10 }}
           whileHover={{ opacity: 1, y: 0 }}

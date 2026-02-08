@@ -63,7 +63,6 @@ export default function DashboardPage() {
             <Link to="projects/add" className="bg-primary text-white px-5 py-3 flex items-center gap-2 rounded-lg shadow hover:scale-[1.02] transition-all"><Plus /> Add Project</Link>
           </div>
         </div>
-        {/* Stats Section */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {stats.map((s) => <StatCardSkeleton key={s.id} />)}
@@ -72,7 +71,6 @@ export default function DashboardPage() {
           <DashboardStats userId={user?.id} />
         )}
 
-        {/* Projects Section */}
         <section>
           <h2 className="text-lg font-semibold text-primary mb-4">Projects</h2>
           {loading ? (

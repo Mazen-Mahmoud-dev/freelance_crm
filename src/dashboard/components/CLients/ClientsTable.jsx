@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Trash2, View, ViewIcon } from "lucide-react";
 import Skeleton from "../../../components/skeletons/Skeleton";
-import { useDeleteClient } from "../../../hooks/useClients";
 import DeleteClientModal from "./DeleteClientModal";
 import { Link } from "react-router-dom";
+import { clientService } from "../../../services/clientService";
 
 export default function ClientsTable({clients,loading}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [selectedClient, setSelectedClient] = useState(null);
+  const [activeProjectsCount,setActiveProjectsCount] = useState({})
   const [isModalOpen, setModalOpen] = useState(false);
-
+  console.log(activeProjectsCount)
   const openModal = (client) => {
     setSelectedClient(client);
     setModalOpen(true);
@@ -20,6 +21,17 @@ export default function ClientsTable({clients,loading}) {
     setSelectedClient(null);
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      const counts = await clientService.getActiveProjectCount();
+      console.log(counts)
+      setActiveProjectsCount(counts);
+    };
+
+    fetchCounts();
+    
+  }, []);
   
   const totalPages = Math.ceil(clients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -73,7 +85,7 @@ export default function ClientsTable({clients,loading}) {
             <tr>
               <th className="py-3 px-6">Client Name</th>
               <th className="py-3 px-6">Email</th>
-              <th className="py-3 px-6">Projects</th>
+              <th className="py-3 px-6">Active Projects</th>
               <th className="py-3 px-6">Status</th>
               <th className="py-3 px-6 text-right">Actions</th>
             </tr>
@@ -97,7 +109,7 @@ export default function ClientsTable({clients,loading}) {
                       {client.name}
                     </td>
                     <td className="py-4 px-6 text-muted">{client.email}</td>
-                    <td className="py-4 px-6 text-muted">{client.projects}</td>
+                    <td className="py-4 px-6 text-green-600">{activeProjectsCount[client.id]}</td>
                     <td className="py-4 px-6">
                       <span
                         className={`px-3 py-1 text-xs rounded-full ${

@@ -45,4 +45,19 @@ export const clientService = {
       .eq("id", id);
     return true;
   },
+
+  async getActiveProjectCount() {
+    const { data, error } = await supabaseWrapper
+    .from("active_projects_count")
+    .select("*");
+    if(error) throw error;
+    const counts = data.reduce((acc, row) => {
+      acc[row.client_id] = row.active_count;
+      return acc;
+    }, {});
+    
+    return counts
+
+  },
+
 };

@@ -1,11 +1,12 @@
 // Sidebar.jsx
 import { Link, NavLink } from "react-router-dom";
-import { LayoutDashboard, Users, Folder, CheckSquare, Settings, X } from "lucide-react";
+import { LayoutDashboard, Users, Folder, CheckSquare, Settings, X , Receipt} from "lucide-react";
 
 const links = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/dashboard/clients", label: "Clients", icon: Users },
   { to: "/dashboard/projects", label: "Projects", icon: Folder },
+  { to: "/dashboard/invoices", label: "Invoices", icon: Receipt },
   { to: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

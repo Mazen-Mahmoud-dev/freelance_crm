@@ -11,8 +11,8 @@ export default function DashboardStats({userId}) {
   const stats = [
     { id: 1, title: "Projects", value: projectsCount, icon: Folder },
     { id: 2, title: "Clients", value: clientsCount, icon: Users },
-    { id: 3, title: "Invoices", value: 5, icon: DollarSign },
-    { id: 4, title: "Pending Tasks", value: 3, icon: CheckCircle },
+    { id: 3, title: "total revenue", value: 5 + "k", icon: DollarSign },
+    { id: 4, title: "Active Projects", value: 3, icon: CheckCircle },
   ];
 
   return (
