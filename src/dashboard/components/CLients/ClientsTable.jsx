@@ -11,7 +11,6 @@ export default function ClientsTable({clients,loading}) {
   const [selectedClient, setSelectedClient] = useState(null);
   const [activeProjectsCount,setActiveProjectsCount] = useState({})
   const [isModalOpen, setModalOpen] = useState(false);
-  console.log(activeProjectsCount)
   const openModal = (client) => {
     setSelectedClient(client);
     setModalOpen(true);
@@ -39,7 +38,7 @@ export default function ClientsTable({clients,loading}) {
 
   const maxVisiblePages = 10;
   const startPage =
-    Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
+  Math.floor((currentPage - 1) / maxVisiblePages) * maxVisiblePages + 1;
   const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
 
   const handlePageChange = (page) => {

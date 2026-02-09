@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react";
 
 export default function ProjectList({ userId }) {
   const { data: projects, isLoading, isError, error } = useProjects(userId);
-  console.log("type of user id: ", typeof(userId));
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-10">

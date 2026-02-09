@@ -26,6 +26,12 @@ export const projectService = {
 
     return data;
   },
+  async getByClient(clientId) {
+    const {data,error} = await supabaseWrapper.from(table).select("*").eq("client_id",clientId)
+
+    if(error) throw error;
+    return data;
+  },
 
   async create(project) {
     return await supabaseWrapper.from(table).insert(project);

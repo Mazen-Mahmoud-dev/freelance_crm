@@ -81,7 +81,8 @@ export default function AddProject() {
     e.preventDefault();
     if (!user?.id) return alert("User not authenticated.");
     if (!form.title.trim()) return alert("Title is required.");
-
+    if(!form.due_date) return alert("Due Date is required.")
+    if(!form.client) return alert("Client is required.")
     try {
       let thumbnailUrl = null;
       let attachmentUrls = [];
@@ -155,6 +156,7 @@ export default function AddProject() {
               name="due_date"
               value={form.due_date}
               onChange={handleChange}
+              required
               className="bg-background border border-primary rounded-lg px-4 py-2 text-text focus:ring-2 focus:ring-primary outline-none transition"
             />
           </div>
