@@ -11,7 +11,7 @@ export default function ConfirmDeleteModal({
 }) {
   const handleDelete = () => {
     console.log(item)
-    deleteMutation.mutate({ id: item.id, project_id: item.project_id }, {
+    deleteMutation.mutate(item.id, {
       onSuccess: () => {
         onClose();
         if (onSuccessRedirect) {

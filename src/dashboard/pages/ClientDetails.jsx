@@ -150,7 +150,7 @@ const ClientDetails = () => {
 
       </motion.div>
 
-      <motion.div>
+      <motion.div className="mt-5">
         <ClientProjectsSection projects={projects} loading={projectsLoading} />
 
 

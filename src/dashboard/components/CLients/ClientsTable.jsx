@@ -108,7 +108,7 @@ export default function ClientsTable({clients,loading}) {
                       {client.name}
                     </td>
                     <td className="py-4 px-6 text-muted">{client.email}</td>
-                    <td className="py-4 px-6 text-green-600">{activeProjectsCount[client.id]}</td>
+                    <td className="py-4 px-6 text-green-600">{activeProjectsCount[client.id] || 0}</td>
                     <td className="py-4 px-6">
                       <span
                         className={`px-3 py-1 text-xs rounded-full ${

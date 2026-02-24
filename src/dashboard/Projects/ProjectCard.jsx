@@ -15,7 +15,7 @@ const statusColors = {
 
 export default function ProjectCard({ project }) {
   const { mutate: deleteProject, isLoading } = useDeleteProject();
-  const {id, title, description, client_name, status, thumbnail_url, client_id } = project;
+  const {id, title, description, client_name, status, thumbnail_url, client_id, due_date } = project;
   const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
   return (
     <motion.div
@@ -65,7 +65,7 @@ export default function ProjectCard({ project }) {
             {status}
           </span>
         </div>
-
+        <span className="text-sm text-zinc-700 dark:text-zinc-400 line-clamp-2 mb-3">Due Date: {due_date || "None"}</span>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-3">
           {description || "No description provided."}
         </p>
