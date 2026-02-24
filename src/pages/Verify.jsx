@@ -10,6 +10,7 @@ export default function Verify() {
   useEffect(() => {
     const handleVerification = async () => {
       try {
+        await supabase.auth.refreshSession();
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
 
