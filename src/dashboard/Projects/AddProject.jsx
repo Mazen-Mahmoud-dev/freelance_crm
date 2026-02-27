@@ -11,12 +11,13 @@ export default function AddProject() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-
+  const [isLoading,setIsLoading] = useState(false)
   const [form, setForm] = useState({
     title: "",
     description: "",
     client: null,
     searchClient: "",
+    revenue: null,
     due_date: "",
     thumbnail: null,
     thumbnailPreview: null,
@@ -78,7 +79,10 @@ export default function AddProject() {
   }, [form.searchClient, clients]);
 
   const handleSubmit = async (e) => {
+    console.log(form.client.id);
+    
     e.preventDefault();
+    setIsLoading(true)
     if (!user?.id) return alert("User not authenticated.");
     if (!form.title.trim()) return alert("Title is required.");
     if(!form.due_date) return alert("Due Date is required.")
@@ -100,6 +104,7 @@ export default function AddProject() {
         description: form.description.trim() || null,
         client_id: form.client?.id || null,
         client_name: form.client?.name || null,
+        revenue: form.revenue || 0,
         thumbnail_url: thumbnailUrl,
         attachments: attachmentUrls,
         due_date: form.due_date || null,
@@ -109,6 +114,7 @@ export default function AddProject() {
       };
 
       createProject(payload);
+      setIsLoading(false)
     } catch (err) {
       console.error("Upload or creation failed:", err);
       alert("Failed to upload files or create project. Check console.");
@@ -225,6 +231,19 @@ export default function AddProject() {
           />
         </div>
 
+        {/* Revenue */}
+        <div className="flex flex-col gap-1">
+          <label className="text-sm text-muted">Revenue</label>
+          <input
+            name="revenue"
+            type="number"
+            value={form.revenue}
+            onChange={handleChange}
+            className="bg-background border border-primary rounded-lg px-4 py-2 text-text focus:ring-2 focus:ring-primary outline-none transition"
+          />
+        </div> 
+        
+
         {/* Thumbnail */}
         <div className="flex flex-col gap-1">
           <label className="text-sm text-muted">Thumbnail (optional)</label>
@@ -270,7 +289,7 @@ export default function AddProject() {
           disabled={isPending}
           className="w-full md:w-auto bg-primary text-white px-6 py-3 rounded-lg shadow hover:scale-[1.02] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
         >
-          {isPending ? (
+          {isLoading ? (
             <>
               <Loader2 size={18} className="animate-spin" /> Adding...
             </>
