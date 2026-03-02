@@ -21,7 +21,22 @@ export default function RegisterForm({ toggleAuth }) {
     setLoading(true);
 
     const { email, username, password } = data;
+    const { error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (!loginError || loginError.message.includes("Invalid login credentials")) {
+      toast.error("This email is already registered. Please login.");
+      setLoading(false);
+      return;
+    }
 
+    if (loginError.message.includes("Email not confirmed")) {
+      toast.error("Account exists but email not verified.");
+      setLoading(false);
+      return;
+    }
     const { data: result, error } = await supabase.auth.signUp({
       email,
       password,
@@ -37,13 +52,6 @@ export default function RegisterForm({ toggleAuth }) {
       toast.error(error.message);
     } else {
       toast.success("✅ Email Verification Link sent successfully");
-      // ✅ إدخال username في جدول profiles (اختياري)
-      // if (result.user) {
-      //   await supabase.from("profiles").insert({
-      //     id: result.user.id,
-      //     username,
-      //   });
-      // }
       reset();
     }
   };
