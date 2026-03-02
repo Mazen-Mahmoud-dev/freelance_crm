@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
         
         if (event === "SIGNED_OUT" || event === "TOKEN_REFRESH_FAILED") {
           // logout();
+          setUser(null);
         } else {
           setUser(session?.user ?? null);
         }
