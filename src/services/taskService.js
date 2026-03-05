@@ -3,7 +3,7 @@ import { supabaseWrapper } from "../lib/supabaseWrapper";
 const table = "tasks";
 
 export const taskService = {
-  async getAllWithProject() {
+  async getAllWithProject(projectId) {
     const { data, error } = await supabaseWrapper
       .from(table)
       .select(`
@@ -12,6 +12,7 @@ export const taskService = {
           title
         )
       `)
+      .eq("project_id", projectId)
       .order("created_at", { ascending: true });
 
     if (error) {

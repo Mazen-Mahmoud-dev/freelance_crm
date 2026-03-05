@@ -1,44 +1,30 @@
 import { useParams } from "react-router-dom";
 import Skeleton from "../../components/skeletons/Skeleton";
 import { useDeleteProject, useProject } from './../../hooks/useProjects';
-import StatCard from "../../components/StatCard";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EditProjectModal from "../Projects/EditProjectModal";
 import { FiEdit } from "react-icons/fi";
 import Zoom from "react-medium-image-zoom";
 import ProjectTasksSection from "../components/ProjectTasksSection";
 import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
-import { useTasks } from './../../hooks/useTasks';
-import { projectService } from "../../services/projectService";
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
+import ProjectHeader from "../components/ProjectHeader";
+import { useProjectStats } from "../../hooks/useProjectStats";
+import ProjectStats from "../components/ProjectStats";
+import TasksPage from "./TasksPage";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
-  const [completedCount,setCompletedCount] = useState(0);
-  const { data: tasks=[] } = useTasks();
-  console.log(tasks);
-  
-  const { data: project, projectLoading, isError } = useProject(user?.id, id);
+  const { data: project, isLoading: projectLoading, isError } = useProject(user?.id, id);
+  const stats = useProjectStats(id);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const { mutate: deleteProject, deleteLoading  } = useDeleteProject();
-  console.log("project: ",project);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   
-  const [OpenDeleteProjectModal, setOpenDeleteProjectModal] = useState(false);
-  useEffect(()=>{
-    if (!project?.id) return;
-    const fetchCompletedTasks = async () => {
-      const count = await projectService.countCompletedTasks(project.id);
-      console.log(count);
-      
-      setCompletedCount(count);
-    };
-
-    fetchCompletedTasks(); 
-  },[project?.id])
   if (projectLoading) return <Skeleton />;
   if (isError) return <div className="text-red-500">Failed to load project.</div>;
   if (!project) return <div className="text-gray-500">Project Loading.</div>;
@@ -46,40 +32,14 @@ const ProjectDetails = () => {
     <div className="min-h-screen bg-bg p-6 md:p-10">
       <div className="max-w-5xl mx-auto bg-card shadow-lg rounded-2xl border border-border p-8">
 
-        {/* HEADER */}
-        <div className="flex items-start justify-between mb-10">
-          <div>
-            <h1 className="text-4xl font-bold text-foreground tracking-tight">
-              {project.title}
-            </h1>
-            <p className="text-sm mt-1">
-              <span>{project.client_name}</span>
-            </p>
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() => setIsEditOpen(true)}
-              className="p-2 rounded-xl border border-border hover:bg-primary/30 transition flex items-center justify-center"
-            >
-              <FiEdit className="w-5 h-5 text-blue-500" />
-            </button>
-
-            <button
-              onClick={() => setOpenDeleteProjectModal(true)}
-              className="p-2 rounded-xl border border-border hover:bg-primary/30 transition flex items-center justify-center"
-            >
-              <Trash2 className="w-5 h-5 text-red-500" />
-            </button>
-          </div>
-        </div>
+        <ProjectHeader
+          project={project}
+          onEdit={() => setIsEditOpen(true)}
+          onDelete={() => setIsDeleteModalOpen(true)}
+        />
 
         {/* STATS */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-          <StatCard title="Tasks" value={0} /> {/* tasks?.length ||  */}
-          <StatCard title="Completed" value={completedCount || 0} />
-          <StatCard title="Progress" value={`${completedCount / tasks.length * 100}%`} />
-        </div>
+        <ProjectStats stats={stats} />
 
         {/* INFO SECTIONS */}
         <div className="grid md:grid-cols-2 gap-10 mb-12">
@@ -109,41 +69,8 @@ const ProjectDetails = () => {
           </motion.div>
         </div>
 
-        {/* TASKS */}
-        {/* <div className="mb-12">
-          <h2 className="text-2xl font-semibold text-foreground mb-4">Tasks</h2>
+        <TasksPage project={project} />
 
-          <div className="space-y-3">
-            {project.tasks?.length > 0 ? (
-              project.tasks.map((task) => (
-                <motion.div
-                  key={task.id}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-accent rounded-xl border border-border flex justify-between items-center"
-                >
-                  <span className={task.completed ? "line-through text-gray-500" : ""}>
-                    {task.title}
-                  </span>
-
-                  <span
-                    className={`px-2 py-1 text-xs rounded-md font-medium ${
-                      task.completed
-                        ? "bg-green-200/50 text-green-700"
-                        : "bg-yellow-200/50 text-yellow-800"
-                    }`}
-                  >
-                    {task.completed ? "Done" : "Pending"}
-                  </span>
-                </motion.div>
-              ))
-            ) : (
-              <p className="text-muted-foreground">No tasks added yet.</p>
-            )}
-          </div>
-        </div> */}
-        <ProjectTasksSection project={project} />
-        {/* FILES */}
         <div className="mb-4">
           <h2 className="text-2xl font-semibold text-foreground mb-4">Files</h2>
 
@@ -175,8 +102,8 @@ const ProjectDetails = () => {
       <EditProjectModal project={project} isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
       <ConfirmDeleteModal
         item={project}
-        isOpen={OpenDeleteProjectModal}
-        onClose={() => setOpenDeleteProjectModal(false)}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
         deleteMutation={{ mutate: deleteProject,isLoading: deleteLoading }}
         title="Delete Project"
         onSuccessRedirect="/dashboard/projects"

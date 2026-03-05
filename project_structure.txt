@@ -1,0 +1,122 @@
+/public
+  ├─ assets/
+  │   ├─ hero-illustration.svg
+  │   ├─ Freelancer-amico.svg
+  │   └─ ...
+  └─ index.html
+/src
+  ├─ App.jsx
+  ├─ main.jsx
+  ├─ index.css
+  ├─ App.css
+  │
+  ├─ context/
+  │   └─ AuthContext.jsx
+  │
+  ├─ hooks/                 # جميع الـ hooks الخاصة بالfeatures أو عامة
+  │   ├─ index.js
+  │   ├─ useClients.js
+  │   ├─ useProjects.js
+  │   ├─ useTasks.js
+  │   ├─ useFilteredTasks.js
+  │   ├─ useTheme.js
+  │   └─ ...
+  │
+  ├─ lib/                   # أي library helper
+  │   ├─ errorHandler.js
+  │   ├─ storageService.js
+  │   ├─ supabaseClient.js
+  │   └─ supabaseWrapper.js
+  │
+  ├─ services/              # كل الـ API calls و logic للـ supabase
+  │   ├─ index.js
+  │   ├─ clientService.js
+  │   ├─ projectService.js
+  │   ├─ taskService.js
+  │   ├─ userService.js
+  │   └─ companyService.js
+  │
+  ├─ layouts/               # layouts عامة
+  │   ├─ AppLayout.jsx
+  │   └─ PublicLayout.jsx
+  │
+  ├─ components/            # UI reusable components عامة
+  │   ├─ modals/
+  │   │   ├─ ConfirmDeleteModal.jsx
+  │   │   └─ DeleteTaskModal.jsx
+  │   ├─ skeletons/
+  │   │   ├─ Skeleton.jsx
+  │   │   ├─ ProjectCardSkeleton.jsx
+  │   │   └─ ...
+  │   ├─ Header.jsx
+  │   ├─ Footer.jsx
+  │   ├─ Sidebar.jsx
+  │   ├─ ScrollToTop.jsx
+  │   ├─ Hero.jsx
+  │   ├─ StatCard.jsx
+  │   └─ ...
+  │
+  ├─ sections/             # Landing page sections
+  │   ├─ HeroSection.jsx
+  │   ├─ FeaturesSection.jsx
+  │   ├─ HowItWorks.jsx
+  │   ├─ TestimonialsSection.jsx
+  │   ├─ PricingSection.jsx
+  │   └─ WhyChooseUs.jsx
+  │
+  ├─ routes/
+  │   └─ router.jsx
+  │
+  ├─ pages/                 # top-level pages (auth, home, dashboard)
+  │   ├─ Auth.jsx
+  │   ├─ Home.jsx
+  │   ├─ Dashboard.jsx
+  │   └─ Verify.jsx
+  │
+  ├─ features/             # كل feature folder خاص بالdashboard
+  │   ├─ clients/
+  │   │   ├─ components/
+  │   │   │   ├─ ClientsCard.jsx
+  │   │   │   ├─ ClientsFilters.jsx
+  │   │   │   ├─ ClientsProjectsSection.jsx
+  │   │   │   └─ DeleteClientModal.jsx
+  │   │   ├─ pages/
+  │   │   │   ├─ ClientsPage.jsx
+  │   │   │   └─ ClientDetails.jsx
+  │   │   └─ hooks/ (اختياري لو فيه hooks خاصة بالclients)
+  │   │
+  │   ├─ projects/
+  │   │   ├─ components/
+  │   │   │   ├─ ProjectCard.jsx
+  │   │   │   ├─ ProjectList.jsx
+  │   │   │   ├─ ProjectHeader.jsx
+  │   │   │   ├─ ProjectStats.jsx
+  │   │   │   ├─ ProjectsChart.jsx
+  │   │   │   └─ RevenueChart.jsx
+  │   │   ├─ pages/
+  │   │   │   ├─ ProjectsPage.jsx
+  │   │   │   ├─ ProjectDetails.jsx
+  │   │   │   ├─ ProjectTable.jsx
+  │   │   │   ├─ AddProject.jsx
+  │   │   │   └─ EditProjectModal.jsx
+  │   │
+  │   ├─ tasks/
+  │   │   ├─ components/
+  │   │   │   ├─ TaskCard.jsx
+  │   │   │   └─ TasksFilters.jsx
+  │   │   ├─ pages/
+  │   │   │   ├─ TasksPage.jsx
+  │   │   │   └─ AddTask.jsx
+  │   │   └─ EditTask.jsx
+  │   │
+  │   └─ activities/
+  │       ├─ components/
+  │       │   ├─ RecentActivityItem.jsx
+  │       │   └─ RecentActivityList.jsx
+  │       └─ pages/ (لو في صفحة مستقلة للactivities)
+  │
+  └─ dashboard/             # optional: فقط dashboard-level container pages
+      ├─ DashboardPage.jsx
+      └─ Stats/
+          ├─ DashboardStats.jsx
+          └─ ProjectProgressChart.jsx
