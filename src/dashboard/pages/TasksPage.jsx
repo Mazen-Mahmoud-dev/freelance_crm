@@ -4,6 +4,7 @@ import { useFilteredTasks } from "../../hooks/useFilteredTasks";
 import { Link } from "react-router-dom";
 import TaskCard from "../components/TaskCard";
 import TasksFilters from "../components/TasksFilters";
+import Skeleton from "../../components/skeletons/Skeleton";
 
 const TasksPage = ({ project }) => {
 
