@@ -2,12 +2,9 @@ import { useParams } from "react-router-dom";
 import Skeleton from "../../components/skeletons/Skeleton";
 import { useDeleteProject, useProject } from './../../hooks/useProjects';
 import { useAuth } from "../../context/AuthContext";
-import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import EditProjectModal from "../Projects/EditProjectModal";
-import { FiEdit } from "react-icons/fi";
 import Zoom from "react-medium-image-zoom";
-import ProjectTasksSection from "../components/ProjectTasksSection";
 import ConfirmDeleteModal from "../../components/modals/ConfirmDeleteModal";
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
